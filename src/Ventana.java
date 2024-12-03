@@ -28,22 +28,22 @@ public class Ventana extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
-        // Tabla para visualizar datos
+        
         modeloTabla = new DefaultTableModel(new String[]{"ID", "Nombre", "Correo"}, 0);
         tabla = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tabla);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Panel del formulario reorganizado
+        
 JPanel panelFormulario = new JPanel();
 GroupLayout layout = new GroupLayout(panelFormulario);
 panelFormulario.setLayout(layout);
 
-// Configuración de auto-creación de gaps
+
 layout.setAutoCreateGaps(true);
 layout.setAutoCreateContainerGaps(true);
 
-// Creación de los componentes
+
 JLabel lblIdentificacion = new JLabel("Identificación:");
 txtIdentificacion = new JTextField();
 
@@ -55,7 +55,7 @@ txtCorreo = new JTextField();
 
 btnAgregar = new JButton("Agregar a la Tabla");
 
-// Posicionamiento de los componentes en el GroupLayout
+
 layout.setHorizontalGroup(
     layout.createSequentialGroup()
         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -85,12 +85,12 @@ layout.setVerticalGroup(
 
 add(panelFormulario, BorderLayout.NORTH);
 
-        // Agregar panel de formulario al lado izquierdo
+        
         JPanel panelIzquierdo = new JPanel(new BorderLayout());
         panelIzquierdo.add(panelFormulario, BorderLayout.NORTH);
         add(panelIzquierdo, BorderLayout.WEST);
 
-        // Panel de botones para gestión de archivos
+        
         JPanel panelBotones = new JPanel();
         panelBotones.setLayout(new GridLayout(3, 2, 10, 10));
 
@@ -108,10 +108,10 @@ add(panelFormulario, BorderLayout.NORTH);
         panelBotones.add(btnGuardarJSON);
         panelBotones.add(btnLeerJSON);
 
-        // Barra inferior para botones
+        
         add(panelBotones, BorderLayout.SOUTH);
 
-        // Acciones de los botones
+        
         btnAgregar.addActionListener(e -> agregarPersonaATabla());
         btnGuardarPlano.addActionListener(e -> guardarArchivoPlano());
         btnLeerPlano.addActionListener(e -> leerArchivoPlano());
@@ -121,7 +121,6 @@ add(panelFormulario, BorderLayout.NORTH);
         btnLeerJSON.addActionListener(e -> leerArchivoJSON());
     }
 
-    // Métodos existentes (agregar, guardar, leer, etc.) permanecen igual
     private void agregarPersonaATabla() {
         String id = txtIdentificacion.getText();
         String nombre = txtNombre.getText();
@@ -129,7 +128,7 @@ add(panelFormulario, BorderLayout.NORTH);
 
         if (!id.isEmpty() && !nombre.isEmpty() && !correo.isEmpty()) {
             try {
-                validarCorreo(correo); // Validar el correo
+                validarCorreo(correo); 
                 modeloTabla.addRow(new Object[]{id, nombre, correo});
                 limpiarFormulario();
             } catch (CorreoInvalidoException e) {
@@ -165,7 +164,7 @@ add(panelFormulario, BorderLayout.NORTH);
     private void leerArchivoPlano() {
         try (BufferedReader reader = new BufferedReader(new FileReader("personas.txt"))) {
             String linea;
-            modeloTabla.setRowCount(0); // Limpiar la tabla antes de cargar los datos
+            modeloTabla.setRowCount(0); 
             while ((linea = reader.readLine()) != null) {
                 String[] datos = linea.split(";");
                 if (datos.length == 3) {
@@ -231,7 +230,7 @@ add(panelFormulario, BorderLayout.NORTH);
             Document doc = builder.parse(archivo);
 
             NodeList listaPersonas = doc.getElementsByTagName("Persona");
-            modeloTabla.setRowCount(0); // Limpiar la tabla antes de cargar los datos
+            modeloTabla.setRowCount(0);
 
             for (int i = 0; i < listaPersonas.getLength(); i++) {
                 Node nodo = listaPersonas.item(i);
@@ -273,9 +272,9 @@ add(panelFormulario, BorderLayout.NORTH);
     private void leerArchivoJSON() {
         try (Reader reader = new FileReader("personas.json")) {
             Gson gson = new Gson();
-            Persona[] personasArray = gson.fromJson(reader, Persona[].class); // Leer como un array de Persona
+            Persona[] personasArray = gson.fromJson(reader, Persona[].class); 
 
-            modeloTabla.setRowCount(0); // Limpiar la tabla antes de cargar los datos
+            modeloTabla.setRowCount(0);
             for (Persona persona : personasArray) {
                 modeloTabla.addRow(new Object[]{persona.getIdentificacion(), persona.getNombre(), persona.getCorreo()});
             }
